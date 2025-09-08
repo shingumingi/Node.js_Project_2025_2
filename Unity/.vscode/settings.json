@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Node_Project.sln"
+    "dotnet.defaultSolution": "Unity.sln"
 }
