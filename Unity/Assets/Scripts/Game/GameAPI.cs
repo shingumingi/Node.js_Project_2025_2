@@ -6,7 +6,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System;
 
-public class GameAPI
+public class GameAPI : MonoBehaviour
 {
     private string baseUrl = "http://localhost:4000/api";           // Node.js URL
 
@@ -42,7 +42,7 @@ public class GameAPI
         var requestData = new { name = playerName, password = password };
         string jsonData = JsonConvert.SerializeObject(requestData);
 
-        using (UnityWebRequest request = new UnityWebRequest($"{baseUrl}/register", "POST"))
+        using (UnityWebRequest request = new UnityWebRequest($"{baseUrl}/login", "POST"))
         {
             byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
