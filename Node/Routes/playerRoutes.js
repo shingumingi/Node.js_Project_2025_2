@@ -3,6 +3,8 @@ const fs = require('fs');
 const router = express.Router();
 
 // 초기 자원 설정
+
+const resourceFilePath = 'resources.json';                  // 자원 저장 파일 경로
 const initalResources = {
     metal : 500,
     crystal : 300,
@@ -13,7 +15,7 @@ const initalResources = {
 global.players = {};
 
 router.post('/register', (req, res) =>{
-    const {name , password} = reg.body;
+    const {name , password} = req.body;
 
     if(global.players[name])
     {
@@ -24,7 +26,7 @@ router.post('/register', (req, res) =>{
 
         playerName : name,
         password : password,
-        resourse : {
+        resourses : {
             metal : 500,
             crystal : 300,
             deuterium : 100
@@ -32,8 +34,8 @@ router.post('/register', (req, res) =>{
         planets:[]
     };
 
-    saveResources();
-    res.send({message : '등록 완료', player:name});
+    saveResourves();
+    res.send({message : '등록 완료', player:name}); 
 });
 
 router.post('/login', (req, res) =>{
@@ -48,17 +50,24 @@ router.post('/login', (req, res) =>{
         return res.status(401).send({message: '비밀번호가 틀렸습니다.'});
     }
 
+    const player = global.players[name];
+
     // 응답 데이터
     const reqponsePayLoad = {
         playerName : player.playerName,
-        metal : player.resourse.metal,
-        crystal : player.resourse.crystal,
-        deuterium : player.resourse.deuterium
+        metal : player.resourses.metal,
+        crystal : player.resourses.crystal,
+        deuterium : player.resourses.deuterium
     }
 
     console.log("Login response playLoad : ", reqponsePayLoad);
     res.send(reqponsePayLoad);
 
 });
+
+function saveResourves()
+{
+    fs.writeFileSync(resourceFilePath, JSON.stringify(global.players, null, 2));        // Json파일로 저장
+}
 
 module.exports = router;                // 라우터 등록
